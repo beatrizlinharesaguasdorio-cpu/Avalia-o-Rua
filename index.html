@@ -43,6 +43,7 @@ h1 {
   gap: 16px;
 }
 
+/* BOTÕES PADRÃO */
 button {
   font-size: 22px;
   padding: 22px;
@@ -54,6 +55,26 @@ button {
 button:active {
   transform: scale(0.97);
 }
+
+/* BOTÕES ESTILO SHOPPING */
+.emoji-btn {
+  font-size: 34px;
+  padding: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* CORES */
+.otimo { background: #4caf50; }
+.bom { background: #81c784; }
+.regular { background: #ffb74d; }
+.ruim { background: #e57373; }
+
+.sim { background: #4caf50; }
+.parcial { background: #ffb74d; }
+.nao { background: #e57373; }
 
 input[type="text"] {
   width: 100%;
@@ -101,9 +122,7 @@ input[type="text"] {
 <!-- ETAPA 2 – GÊNERO -->
 <div id="step2" class="hidden">
   <div class="question">Com qual gênero você se identifica?</div>
-  <div class="explain">
-    Gênero diz respeito à forma como cada pessoa se reconhece.
-  </div>
+  <div class="explain">Gênero diz respeito à forma como cada pessoa se reconhece.</div>
   <div class="buttons">
     <button onclick="save('genero','Mulher Cisgênero')">Mulher Cisgênero</button>
     <button onclick="save('genero','Homem Cisgênero')">Homem Cisgênero</button>
@@ -125,7 +144,7 @@ input[type="text"] {
   </div>
 </div>
 
-<!-- ETAPA 4 – PCD -->
+<!-- ETAPA 4 – PcD -->
 <div id="step4" class="hidden">
   <div class="question">Você é uma Pessoa com Deficiência (PcD)?</div>
   <div class="buttons">
@@ -139,25 +158,25 @@ input[type="text"] {
   </div>
 </div>
 
-<!-- ETAPA 5 – AVALIAÇÃO -->
+<!-- ETAPA 5 – AVALIAÇÃO (SHOPPING) -->
 <div id="step5" class="hidden">
   <div class="question">Como você avalia a qualidade geral da atividade?</div>
   <div class="buttons">
-    <button onclick="save('avaliacao','Excelente')">Excelente</button>
-    <button onclick="save('avaliacao','Boa')">Boa</button>
-    <button onclick="save('avaliacao','Regular')">Regular</button>
-    <button onclick="save('avaliacao','Ruim')">Ruim</button>
+    <button class="emoji-btn otimo" onclick="save('avaliacao','Excelente')">😄 Excelente</button>
+    <button class="emoji-btn bom" onclick="save('avaliacao','Boa')">🙂 Boa</button>
+    <button class="emoji-btn regular" onclick="save('avaliacao','Regular')">😐 Regular</button>
+    <button class="emoji-btn ruim" onclick="save('avaliacao','Ruim')">😡 Ruim</button>
   </div>
 </div>
 
-<!-- ETAPA 6 – CLAREZA -->
+<!-- ETAPA 6 – CLAREZA (SHOPPING) -->
 <div id="step6" class="hidden">
   <div class="question">As informações foram claras e fáceis de entender?</div>
   <div class="buttons">
-    <button onclick="save('clareza','Muito claras')">Muito claras</button>
-    <button onclick="save('clareza','Parcialmente claras')">Parcialmente claras</button>
-    <button onclick="save('clareza','Pouco claras')">Pouco claras</button>
-    <button onclick="save('clareza','Não foram claras')">Não foram claras</button>
+    <button class="emoji-btn otimo" onclick="save('clareza','Muito claras')">😄 Muito claras</button>
+    <button class="emoji-btn regular" onclick="save('clareza','Parcialmente claras')">😐 Parcialmente claras</button>
+    <button class="emoji-btn ruim" onclick="save('clareza','Pouco claras')">😕 Pouco claras</button>
+    <button class="emoji-btn ruim" onclick="save('clareza','Não foram claras')">😡 Não foram claras</button>
   </div>
 </div>
 
@@ -165,9 +184,9 @@ input[type="text"] {
 <div id="step7" class="hidden">
   <div class="question">Após a atividade, você aprendeu algo novo?</div>
   <div class="buttons">
-    <button onclick="finalizar('Aprendi bastante')">Aprendi bastante</button>
-    <button onclick="finalizar('Aprendi um pouco')">Aprendi um pouco</button>
-    <button onclick="finalizar('Não aprendi')">Não aprendi</button>
+    <button class="emoji-btn otimo" onclick="finalizar('Aprendi bastante')">😄 Aprendi bastante</button>
+    <button class="emoji-btn regular" onclick="finalizar('Aprendi um pouco')">🙂 Aprendi um pouco</button>
+    <button class="emoji-btn ruim" onclick="finalizar('Não aprendi')">😕 Não aprendi</button>
   </div>
 </div>
 
@@ -178,7 +197,6 @@ input[type="text"] {
 </div>
 
 <script>
-
 const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSe4eKhrIlLXqNiD2Co9Yg6iwURYgQlVZEDoLkuJbZYouN_hZw/formResponse?usp=sharing&ouid=106785117846395425167";
 
 const entries = {
