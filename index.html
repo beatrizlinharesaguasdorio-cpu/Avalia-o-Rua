@@ -211,8 +211,19 @@ const entries = {
 };
 
 let data = {};
-let step = 0;
+let currentStep = 0;
 
+/* AVANÇA PARA UMA ETAPA ESPECÍFICA */
+function showStep(n) {
+  document.querySelectorAll("[id^='step']").forEach(el =>
+    el.classList.add("hidden")
+  );
+  const stepEl = document.getElementById("step" + n);
+  if (stepEl) stepEl.classList.remove("hidden");
+  currentStep = n;
+}
+
+/* ETAPA DO NOME */
 function nextStep() {
   const nome = document.getElementById("nome").value.trim();
   if (!nome) {
@@ -223,19 +234,15 @@ function nextStep() {
   showStep(1);
 }
 
+/* SALVA RESPOSTA E AVANÇA UMA ETAPA */
 function save(key, value) {
   data[key] = value;
-  showStep(++step + 1);
+  showStep(currentStep + 1);
 }
 
-function showStep(n) {
-  document.querySelectorAll("[id^='step']").forEach(el => el.classList.add("hidden"));
-  document.getElementById("step" + n).classList.remove("hidden");
-  step = n;
-}
-
-function finalizar(valor) {
-  data.aprendizado = valor;
+/* FINALIZA */
+function finalizar(value) {
+  data.aprendizado = value;
 
   const form = document.createElement("form");
   form.action = formURL;
@@ -243,6 +250,7 @@ function finalizar(valor) {
   form.target = "hidden_iframe";
 
   for (let key in data) {
+    if (!entries[key]) continue;
     const input = document.createElement("input");
     input.type = "hidden";
     input.name = entries[key];
@@ -254,7 +262,9 @@ function finalizar(valor) {
   form.submit();
   document.body.removeChild(form);
 
-  document.querySelectorAll("[id^='step']").forEach(el => el.classList.add("hidden"));
+  document.querySelectorAll("[id^='step']").forEach(el =>
+    el.classList.add("hidden")
+  );
   document.getElementById("thanks").classList.remove("hidden");
 
   setTimeout(() => location.reload(), 2500);
