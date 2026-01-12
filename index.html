@@ -76,10 +76,10 @@ button:active {
     <h1>Avalie nossa ação</h1>
     <div class="question">Como você avalia essa ação?</div>
     <div class="buttons">
-      <button class="ruim" onclick="next()">😡 Ruim</button>
-      <button class="regular" onclick="next()">😐 Regular</button>
-      <button class="bom" onclick="next()">🙂 Bom</button>
-      <button class="otimo" onclick="next()">😄 Ótimo</button>
+<button class="ruim" onclick="responder('Ruim')">😡 Ruim</button>
+<button class="regular" onclick="responder('Regular')">😐 Regular</button>
+<button class="bom" onclick="responder('Bom')">🙂 Bom</button>
+<button class="otimo" onclick="responder('Ótimo')">😄 Ótimo</button>
     </div>
   </div>
 
@@ -87,8 +87,8 @@ button:active {
   <div id="step2" class="hidden">
     <div class="question">Você entendeu as informações apresentadas?</div>
     <div class="buttons">
-      <button class="sim" onclick="finish()">✅ Sim</button>
-      <button class="nao" onclick="finish()">❌ Não</button>
+ <button class="sim" onclick="finalizar('Sim')">✅ Sim</button>
+<button class="nao" onclick="finalizar('Não')">❌ Não</button>
     </div>
   </div>
 
