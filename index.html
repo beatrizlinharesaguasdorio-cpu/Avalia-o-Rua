@@ -3,45 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Avaliação Rápida</title>
+<title>Avaliação da Atividade</title>
 
 <style>
 body {
   font-family: Arial, sans-serif;
-  background: #f4f4f4;
+  background: #f2f2f2;
   margin: 0;
 }
 
 .container {
   min-height: 100vh;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 20px;
   text-align: center;
 }
 
 h1 {
-  font-size: 22px;
+  font-size: 26px;
   margin-bottom: 20px;
 }
 
 .question {
-  font-size: 20px;
-  margin-bottom: 20px;
+  font-size: 24px;
+  margin-bottom: 18px;
+}
+
+.explain {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 25px;
 }
 
 .buttons {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
 }
 
-.buttons button {
-  font-size: 32px;
+button {
+  font-size: 22px;
   padding: 22px;
-  border: none;
   border-radius: 18px;
+  border: none;
   cursor: pointer;
 }
 
@@ -51,27 +57,20 @@ button:active {
 
 input[type="text"] {
   width: 100%;
-  padding: 15px;
-  font-size: 18px;
-  margin-bottom: 25px;
-  border-radius: 12px;
+  padding: 18px;
+  font-size: 20px;
+  margin-bottom: 30px;
+  border-radius: 14px;
   border: 1px solid #ccc;
 }
-
-.ruim { background: #e57373; }
-.regular { background: #ffb74d; }
-.bom { background: #81c784; }
-.otimo { background: #4caf50; }
-
-.sim { background: #4caf50; }
-.nao { background: #e57373; }
 
 .hidden {
   display: none;
 }
 
 .thanks {
-  font-size: 22px;
+  font-size: 26px;
+  font-weight: bold;
 }
 </style>
 </head>
@@ -79,108 +78,168 @@ input[type="text"] {
 <body>
 <div class="container">
 
-  <!-- ETAPA 1: NOME + PERGUNTA 1 -->
-  <div id="step1">
-    <h1>Avalie nossa ação</h1>
+<!-- ETAPA 0 – NOME -->
+<div id="step0">
+  <h1>Pesquisa de Avaliação</h1>
+  <input type="text" id="nome" placeholder="Digite seu nome" required>
+  <button onclick="nextStep()">Continuar</button>
+</div>
 
-    <input 
-      type="text"
-      id="nomePessoa"
-      placeholder="Digite seu nome"
-      required
-    >
-
-    <div class="question">Como você avalia essa ação?</div>
-    <div class="buttons">
-      <button class="ruim" onclick="responder('Ruim')">😡 Ruim</button>
-      <button class="regular" onclick="responder('Regular')">😐 Regular</button>
-      <button class="bom" onclick="responder('Bom')">🙂 Bom</button>
-      <button class="otimo" onclick="responder('Ótimo')">😄 Ótimo</button>
-    </div>
+<!-- ETAPA 1 – COR / RAÇA -->
+<div id="step1" class="hidden">
+  <div class="question">Como você se autodeclara em relação à sua cor ou raça?</div>
+  <div class="buttons">
+    <button onclick="save('cor','Branca')">Branca</button>
+    <button onclick="save('cor','Preta')">Preta</button>
+    <button onclick="save('cor','Parda')">Parda</button>
+    <button onclick="save('cor','Amarela')">Amarela</button>
+    <button onclick="save('cor','Indígena')">Indígena</button>
+    <button onclick="save('cor','Prefiro não responder')">Prefiro não responder</button>
   </div>
+</div>
 
-  <!-- ETAPA 2: PERGUNTA 2 -->
-  <div id="step2" class="hidden">
-    <div class="question">Você entendeu as informações apresentadas?</div>
-    <div class="buttons">
-      <button class="sim" onclick="finalizar('Sim')">✅ Sim</button>
-      <button class="nao" onclick="finalizar('Não')">❌ Não</button>
-    </div>
+<!-- ETAPA 2 – GÊNERO -->
+<div id="step2" class="hidden">
+  <div class="question">Com qual gênero você se identifica?</div>
+  <div class="explain">
+    Gênero diz respeito à forma como cada pessoa se reconhece.
   </div>
+  <div class="buttons">
+    <button onclick="save('genero','Mulher Cisgênero')">Mulher Cisgênero</button>
+    <button onclick="save('genero','Homem Cisgênero')">Homem Cisgênero</button>
+    <button onclick="save('genero','Mulher Transgênero')">Mulher Transgênero</button>
+    <button onclick="save('genero','Homem Transgênero')">Homem Transgênero</button>
+    <button onclick="save('genero','Pessoa Não Binária')">Pessoa Não Binária</button>
+    <button onclick="save('genero','Prefiro não responder')">Prefiro não responder</button>
+  </div>
+</div>
 
-  <!-- AGRADECIMENTO -->
-  <div id="thanks" class="hidden">
-    <div class="thanks">Obrigado pela participação 💙</div>
+<!-- ETAPA 3 – FAIXA ETÁRIA -->
+<div id="step3" class="hidden">
+  <div class="question">Qual é a sua faixa etária?</div>
+  <div class="buttons">
+    <button onclick="save('idade','Menos de 18 anos')">Menos de 18 anos</button>
+    <button onclick="save('idade','18 a 30 anos')">18 a 30 anos</button>
+    <button onclick="save('idade','31 a 50 anos')">31 a 50 anos</button>
+    <button onclick="save('idade','Mais de 50 anos')">Mais de 50 anos</button>
   </div>
+</div>
+
+<!-- ETAPA 4 – PCD -->
+<div id="step4" class="hidden">
+  <div class="question">Você é uma Pessoa com Deficiência (PcD)?</div>
+  <div class="buttons">
+    <button onclick="save('pcd','Física')">Física</button>
+    <button onclick="save('pcd','Visual')">Visual</button>
+    <button onclick="save('pcd','Auditiva')">Auditiva</button>
+    <button onclick="save('pcd','Intelectual')">Intelectual</button>
+    <button onclick="save('pcd','Psicossocial')">Psicossocial</button>
+    <button onclick="save('pcd','TEA')">Transtorno do Espectro Autista (TEA)</button>
+    <button onclick="save('pcd','Não possuo deficiência')">Não possuo deficiência</button>
+  </div>
+</div>
+
+<!-- ETAPA 5 – AVALIAÇÃO -->
+<div id="step5" class="hidden">
+  <div class="question">Como você avalia a qualidade geral da atividade?</div>
+  <div class="buttons">
+    <button onclick="save('avaliacao','Excelente')">Excelente</button>
+    <button onclick="save('avaliacao','Boa')">Boa</button>
+    <button onclick="save('avaliacao','Regular')">Regular</button>
+    <button onclick="save('avaliacao','Ruim')">Ruim</button>
+  </div>
+</div>
+
+<!-- ETAPA 6 – CLAREZA -->
+<div id="step6" class="hidden">
+  <div class="question">As informações foram claras e fáceis de entender?</div>
+  <div class="buttons">
+    <button onclick="save('clareza','Muito claras')">Muito claras</button>
+    <button onclick="save('clareza','Parcialmente claras')">Parcialmente claras</button>
+    <button onclick="save('clareza','Pouco claras')">Pouco claras</button>
+    <button onclick="save('clareza','Não foram claras')">Não foram claras</button>
+  </div>
+</div>
+
+<!-- ETAPA 7 – APRENDIZADO -->
+<div id="step7" class="hidden">
+  <div class="question">Após a atividade, você aprendeu algo novo?</div>
+  <div class="buttons">
+    <button onclick="finalizar('Aprendi bastante')">Aprendi bastante</button>
+    <button onclick="finalizar('Aprendi um pouco')">Aprendi um pouco</button>
+    <button onclick="finalizar('Não aprendi')">Não aprendi</button>
+  </div>
+</div>
+
+<div id="thanks" class="hidden">
+  <div class="thanks">Obrigada pela participação 💙</div>
+</div>
 
 </div>
 
 <script>
-/* 🔴 TROCAR AQUI */
+
 const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSe4eKhrIlLXqNiD2Co9Yg6iwURYgQlVZEDoLkuJbZYouN_hZw/formResponse?usp=sharing&ouid=106785117846395425167";
-const qNome = "entry.1507819355"; // NOME
-const q1 = "entry.1203672452";    // Pergunta 1
-const q2 = "entry.1533356640";    // Pergunta 2
 
-let nome = "";
-let resposta1 = "";
-let resposta2 = "";
+const entries = {
+  nome: "entry.1507819355",
+  cor: "entry.757698879",
+  genero: "entry.955667241",
+  idade: "entry.682673327",
+  pcd: "entry.1203672452",
+  avaliacao: "entry.1533356640",
+  clareza: "entry.122240422",
+  aprendizado: "entry.115105160"
+};
 
-function responder(valor) {
-  const campoNome = document.getElementById("nomePessoa");
+let data = {};
+let step = 0;
 
-  if (!campoNome.value.trim()) {
-    alert("Por favor, preencha seu nome.");
-    campoNome.focus();
+function nextStep() {
+  const nome = document.getElementById("nome").value.trim();
+  if (!nome) {
+    alert("Por favor, digite seu nome.");
     return;
   }
+  data.nome = nome;
+  showStep(1);
+}
 
-  nome = campoNome.value.trim();
-  resposta1 = valor;
+function save(key, value) {
+  data[key] = value;
+  showStep(++step + 1);
+}
 
-  document.getElementById("step1").classList.add("hidden");
-  document.getElementById("step2").classList.remove("hidden");
+function showStep(n) {
+  document.querySelectorAll("[id^='step']").forEach(el => el.classList.add("hidden"));
+  document.getElementById("step" + n).classList.remove("hidden");
+  step = n;
 }
 
 function finalizar(valor) {
-  resposta2 = valor;
+  data.aprendizado = valor;
 
   const form = document.createElement("form");
   form.action = formURL;
   form.method = "POST";
   form.target = "hidden_iframe";
 
-  const inputNome = document.createElement("input");
-  inputNome.type = "hidden";
-  inputNome.name = qNome;
-  inputNome.value = nome;
-
-  const input1 = document.createElement("input");
-  input1.type = "hidden";
-  input1.name = q1;
-  input1.value = resposta1;
-
-  const input2 = document.createElement("input");
-  input2.type = "hidden";
-  input2.name = q2;
-  input2.value = resposta2;
-
-  form.appendChild(inputNome);
-  form.appendChild(input1);
-  form.appendChild(input2);
+  for (let key in data) {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = entries[key];
+    input.value = data[key];
+    form.appendChild(input);
+  }
 
   document.body.appendChild(form);
   form.submit();
   document.body.removeChild(form);
 
-  document.getElementById("step2").classList.add("hidden");
+  document.querySelectorAll("[id^='step']").forEach(el => el.classList.add("hidden"));
   document.getElementById("thanks").classList.remove("hidden");
 
-  setTimeout(() => {
-    document.getElementById("thanks").classList.add("hidden");
-    document.getElementById("step1").classList.remove("hidden");
-    document.getElementById("nomePessoa").value = "";
-  }, 2000);
+  setTimeout(() => location.reload(), 2500);
 }
 </script>
 
