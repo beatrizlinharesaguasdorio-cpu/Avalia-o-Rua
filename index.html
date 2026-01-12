@@ -23,7 +23,7 @@ body {
 
 h1 {
   font-size: 22px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .question {
@@ -49,6 +49,15 @@ button:active {
   transform: scale(0.97);
 }
 
+input[type="text"] {
+  width: 100%;
+  padding: 15px;
+  font-size: 18px;
+  margin-bottom: 25px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+}
+
 .ruim { background: #e57373; }
 .regular { background: #ffb74d; }
 .bom { background: #81c784; }
@@ -70,9 +79,17 @@ button:active {
 <body>
 <div class="container">
 
-  <!-- PERGUNTA 1 -->
+  <!-- ETAPA 1: NOME + PERGUNTA 1 -->
   <div id="step1">
     <h1>Avalie nossa ação</h1>
+
+    <input 
+      type="text"
+      id="nomePessoa"
+      placeholder="Digite seu nome"
+      required
+    >
+
     <div class="question">Como você avalia essa ação?</div>
     <div class="buttons">
       <button class="ruim" onclick="responder('Ruim')">😡 Ruim</button>
@@ -82,7 +99,7 @@ button:active {
     </div>
   </div>
 
-  <!-- PERGUNTA 2 -->
+  <!-- ETAPA 2: PERGUNTA 2 -->
   <div id="step2" class="hidden">
     <div class="question">Você entendeu as informações apresentadas?</div>
     <div class="buttons">
@@ -99,15 +116,28 @@ button:active {
 </div>
 
 <script>
+/* 🔴 TROCAR AQUI */
 const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSe4eKhrIlLXqNiD2Co9Yg6iwURYgQlVZEDoLkuJbZYouN_hZw/formResponse?usp=sharing&ouid=106785117846395425167";
-const q1 = "entry.1203672452"; // Pergunta 1
-const q2 = "entry.1533356640"; // Pergunta 2
+const qNome = "entry.1507819355"; // NOME
+const q1 = "entry.1203672452";    // Pergunta 1
+const q2 = "entry.1533356640";    // Pergunta 2
 
+let nome = "";
 let resposta1 = "";
 let resposta2 = "";
 
 function responder(valor) {
+  const campoNome = document.getElementById("nomePessoa");
+
+  if (!campoNome.value.trim()) {
+    alert("Por favor, preencha seu nome.");
+    campoNome.focus();
+    return;
+  }
+
+  nome = campoNome.value.trim();
   resposta1 = valor;
+
   document.getElementById("step1").classList.add("hidden");
   document.getElementById("step2").classList.remove("hidden");
 }
@@ -115,15 +145,33 @@ function responder(valor) {
 function finalizar(valor) {
   resposta2 = valor;
 
-  const data = new FormData();
-  data.append(q1, resposta1);
-  data.append(q2, resposta2);
+  const form = document.createElement("form");
+  form.action = formURL;
+  form.method = "POST";
+  form.target = "hidden_iframe";
 
-  fetch(formURL, {
-    method: "POST",
-    mode: "no-cors",
-    body: data
-  });
+  const inputNome = document.createElement("input");
+  inputNome.type = "hidden";
+  inputNome.name = qNome;
+  inputNome.value = nome;
+
+  const input1 = document.createElement("input");
+  input1.type = "hidden";
+  input1.name = q1;
+  input1.value = resposta1;
+
+  const input2 = document.createElement("input");
+  input2.type = "hidden";
+  input2.name = q2;
+  input2.value = resposta2;
+
+  form.appendChild(inputNome);
+  form.appendChild(input1);
+  form.appendChild(input2);
+
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
 
   document.getElementById("step2").classList.add("hidden");
   document.getElementById("thanks").classList.remove("hidden");
@@ -131,9 +179,12 @@ function finalizar(valor) {
   setTimeout(() => {
     document.getElementById("thanks").classList.add("hidden");
     document.getElementById("step1").classList.remove("hidden");
+    document.getElementById("nomePessoa").value = "";
   }, 2000);
 }
 </script>
+
+<iframe name="hidden_iframe" style="display:none;"></iframe>
 
 </body>
 </html>
