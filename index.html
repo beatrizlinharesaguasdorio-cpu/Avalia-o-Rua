@@ -10,7 +10,6 @@ body {
   font-family: Arial, sans-serif;
   background: #f4f4f4;
   margin: 0;
-  padding: 0;
 }
 
 .container {
@@ -39,7 +38,7 @@ h1 {
 }
 
 .buttons button {
-  font-size: 36px;
+  font-size: 32px;
   padding: 22px;
   border: none;
   border-radius: 18px;
@@ -71,28 +70,28 @@ button:active {
 <body>
 <div class="container">
 
-  <!-- Pergunta 1 -->
+  <!-- PERGUNTA 1 -->
   <div id="step1">
     <h1>Avalie nossa ação</h1>
     <div class="question">Como você avalia essa ação?</div>
     <div class="buttons">
-<button class="ruim" onclick="responder('Ruim')">😡 Ruim</button>
-<button class="regular" onclick="responder('Regular')">😐 Regular</button>
-<button class="bom" onclick="responder('Bom')">🙂 Bom</button>
-<button class="otimo" onclick="responder('Ótimo')">😄 Ótimo</button>
+      <button class="ruim" onclick="responder('Ruim')">😡 Ruim</button>
+      <button class="regular" onclick="responder('Regular')">😐 Regular</button>
+      <button class="bom" onclick="responder('Bom')">🙂 Bom</button>
+      <button class="otimo" onclick="responder('Ótimo')">😄 Ótimo</button>
     </div>
   </div>
 
-  <!-- Pergunta 2 -->
+  <!-- PERGUNTA 2 -->
   <div id="step2" class="hidden">
     <div class="question">Você entendeu as informações apresentadas?</div>
     <div class="buttons">
- <button class="sim" onclick="finalizar('Sim')">✅ Sim</button>
-<button class="nao" onclick="finalizar('Não')">❌ Não</button>
+      <button class="sim" onclick="finalizar('Sim')">✅ Sim</button>
+      <button class="nao" onclick="finalizar('Não')">❌ Não</button>
     </div>
   </div>
 
-  <!-- Agradecimento -->
+  <!-- AGRADECIMENTO -->
   <div id="thanks" class="hidden">
     <div class="thanks">Obrigado pela participação 💙</div>
   </div>
@@ -100,12 +99,32 @@ button:active {
 </div>
 
 <script>
-function next() {
+const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSe4eKhrIlLXqNiD2Co9Yg6iwURYgQlVZEDoLkuJbZYouN_hZw/formResponse?usp=sharing&ouid=106785117846395425167";
+const q1 = "entry.123456"; // Pergunta 1
+const q2 = "entry.654321"; // Pergunta 2
+
+let resposta1 = "";
+let resposta2 = "";
+
+function responder(valor) {
+  resposta1 = valor;
   document.getElementById("step1").classList.add("hidden");
   document.getElementById("step2").classList.remove("hidden");
 }
 
-function finish() {
+function finalizar(valor) {
+  resposta2 = valor;
+
+  const data = new FormData();
+  data.append(q1, resposta1);
+  data.append(q2, resposta2);
+
+  fetch(formURL, {
+    method: "POST",
+    mode: "no-cors",
+    body: data
+  });
+
   document.getElementById("step2").classList.add("hidden");
   document.getElementById("thanks").classList.remove("hidden");
 
@@ -114,9 +133,7 @@ function finish() {
     document.getElementById("step1").classList.remove("hidden");
   }, 2000);
 }
-</script> const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSe4eKhrIlLXqNiD2Co9Yg6iwURYgQlVZEDoLkuJbZYouN_hZw/viewform?usp=sharing&ouid=106785117846395425167";
-const q1 = "entry.987654321";
-const q2 = "entry.123987456";
+</script>
 
 </body>
 </html>
